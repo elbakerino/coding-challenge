@@ -3,7 +3,6 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link as RouterDomLink
 } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Link from '@material-ui/core/Link'
@@ -17,11 +16,7 @@ import { Home } from './pages/Home'
 import { ProductDetail } from './pages/ProductDetail'
 
 import reducers from './reducers'
-
-const RouterLink = (props: React.PropsWithChildren<any>) => {
-    // @ts-ignore
-    return <Link component={RouterDomLink} {...props}/>
-}
+import { RouterLink } from './components/Link'
 
 function Copyright() {
     return (
