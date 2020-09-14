@@ -31,6 +31,12 @@ export interface ProductsState {
     activeProduct?: ProductData
 }
 
+const parseText = (text: string) => {
+    // html parts cleaning, https://stackoverflow.com/a/47963179/2073149
+    const parser = new DOMParser()
+    return parser.parseFromString(`<!doctype html><body>${text}`, 'text/html').body.textContent || ''
+}
+
 export const product_list = (state: ProductsState = {
     loading: false,
     loadingActive: false,
@@ -47,7 +53,10 @@ export const product_list = (state: ProductsState = {
             return {
                 ...state,
                 loading: true,
-                products: action.products,
+                products: action.products.map((product: ProductData) => {
+                    product.name = parseText(product.name)
+                    return product
+                }),
             }
         case LOAD_PRODUCT:
             return {
@@ -58,7 +67,11 @@ export const product_list = (state: ProductsState = {
             return {
                 ...state,
                 loadingActive: true,
-                activeProduct: action.product,
+                activeProduct: (() => {
+                    const product = action.product
+                    product.name = parseText(product.name)
+                    return product
+                })(),
             }
         default:
             return state
